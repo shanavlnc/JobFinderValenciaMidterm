@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Job } from '../api/apiTypes';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { Job } from '../api/jobsApi';
 import { useTheme } from '../context/ThemeContext';
 
 type JobCardProps = {
@@ -13,6 +13,14 @@ type JobCardProps = {
 
 const JobCard: React.FC<JobCardProps> = ({ job, onSave, onRemove, onApply, isSaved }) => {
   const { theme } = useTheme();
+
+  const handleSavePress = () => {
+    if (isSaved && onRemove) {
+      onRemove();
+    } else if (!isSaved && onSave) {
+      onSave();
+    }
+  };
 
   return (
     <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
@@ -27,32 +35,34 @@ const JobCard: React.FC<JobCardProps> = ({ job, onSave, onRemove, onApply, isSav
       </View>
 
       {job.salary && (
-        <Text style={[styles.salary, { color: theme.colors.text }]}>Salary: {job.salary}</Text>
+        <Text style={[styles.detail, { color: theme.colors.text }]}>💰 Salary: {job.salary}</Text>
       )}
 
       {job.locations && job.locations.length > 0 && (
-        <Text style={[styles.location, { color: theme.colors.text }]}>
-          Locations: {job.locations.join(', ')}
+        <Text style={[styles.detail, { color: theme.colors.text }]}>
+          📍 Locations: {job.locations.join(', ')}
         </Text>
       )}
 
+      {job.jobType && (
+        <Text style={[styles.detail, { color: theme.colors.text }]}>🕒 {job.jobType}</Text>
+      )}
+
       <View style={styles.buttonContainer}>
-        {isSaved ? (
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: 'red' }]}
-            onPress={onRemove}
-          >
-            <Text style={styles.buttonText}>Remove</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: onSave ? 'green' : 'gray' }]}
-            onPress={onSave}
-            disabled={!onSave}
-          >
-            <Text style={styles.buttonText}>{onSave ? 'Save' : 'Saved'}</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={[
+            styles.button,
+            { 
+              backgroundColor: isSaved ? theme.colors.primary : '#2ecc71',
+              opacity: isSaved ? 0.8 : 1
+            }
+          ]}
+          onPress={handleSavePress}
+        >
+          <Text style={styles.buttonText}>
+            {isSaved ? '✓ Saved' : 'Save'}
+          </Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.button, { backgroundColor: theme.colors.primary }]}
@@ -68,7 +78,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, onSave, onRemove, onApply, isSav
 const styles = StyleSheet.create({
   card: {
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 12,
     marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -79,12 +89,12 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   logo: {
     width: 50,
     height: 50,
-    borderRadius: 25,
+    borderRadius: 8,
     marginRight: 12,
   },
   headerText: {
@@ -93,31 +103,33 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 4,
   },
   company: {
     fontSize: 14,
     opacity: 0.8,
   },
-  salary: {
-    marginBottom: 4,
-  },
-  location: {
-    marginBottom: 12,
+  detail: {
+    marginBottom: 8,
+    fontSize: 14,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 12,
   },
   button: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 4,
-    minWidth: 100,
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 8,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 4,
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+    fontSize: 14,
   },
 });
 

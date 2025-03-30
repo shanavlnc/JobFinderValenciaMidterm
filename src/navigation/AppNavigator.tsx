@@ -29,14 +29,24 @@ const AppNavigator = () => {
           options={({ navigation }) => ({
             title: 'Job Finder',
             headerRight: () => (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <ThemeToggle />
+              <View style={{ 
+                flexDirection: 'row', 
+                alignItems: 'center',
+                width: 180, // Fixed width to prevent overlap
+                justifyContent: 'space-between'
+              }}>
+                <View style={{ marginRight: 10 }}>
+                  <ThemeToggle />
+                </View>
                 <Button
                   title="Saved Jobs"
                   onPress={() => navigation.navigate('SavedJobs')}
                 />
               </View>
             ),
+            headerTitleStyle: {
+              maxWidth: 150, // Prevent title from taking too much space
+            },
           })}
         />
         <Stack.Screen

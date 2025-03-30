@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { Alert } from 'react-native';
 import { Job } from '../api/jobsApi';
 import { fetchJobs } from '../api/jobsApi';
 
@@ -28,24 +29,28 @@ export const JobsProvider: React.FC<{children: React.ReactNode}> = ({ children }
   const refreshJobs = async () => {
     setLoading(true);
     try {
-      const result = await fetchJobs();
-      setJobs(result);
+      const fetchedJobs = await fetchJobs();
+      setJobs(fetchedJobs);
     } catch (error) {
       console.error(error);
+      Alert.alert('Error', 'Failed to fetch jobs');
     } finally {
       setLoading(false);
     }
   };
 
   const saveJob = (job: Job) => {
-    setSavedJobs(prev => {
-      if (prev.some(j => j.id === job.id)) return prev;
-      return [...prev, job];
-    });
+    if (savedJobs.some(j => j.id === job.id)) {
+      Alert.alert('Already Saved', 'This job is already in your saved list');
+      return;
+    }
+    setSavedJobs(prev => [...prev, job]);
+    Alert.alert('Saved', 'Job has been saved to your list');
   };
 
   const removeJob = (jobId: string) => {
     setSavedJobs(prev => prev.filter(job => job.id !== jobId));
+    Alert.alert('Removed', 'Job has been removed from your saved list');
   };
 
   useEffect(() => {
