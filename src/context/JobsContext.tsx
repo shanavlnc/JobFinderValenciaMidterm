@@ -40,19 +40,13 @@ export const JobsProvider: React.FC<{children: React.ReactNode}> = ({ children }
   };
 
   const saveJob = (job: Job) => {
-    if (savedJobs.some(j => j.id === job.id)) {
-      Alert.alert('Already Saved', 'This job is already in your saved list');
-      return;
-    }
+    if (savedJobs.some(j => j.id === job.id)) return;
     setSavedJobs(prev => [...prev, job]);
-    Alert.alert('Saved', 'Job has been saved to your list');
   };
-
+  
   const removeJob = (jobId: string) => {
     setSavedJobs(prev => prev.filter(job => job.id !== jobId));
-    Alert.alert('Removed', 'Job has been removed from your saved list');
   };
-
   useEffect(() => {
     refreshJobs();
   }, []);

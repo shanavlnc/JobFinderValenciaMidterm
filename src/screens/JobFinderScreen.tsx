@@ -50,11 +50,12 @@ const JobFinderScreen = ({ navigation }: Props) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <JobCard
-            job={item}
-            onSave={() => saveJob(item)}
-            onApply={() => handleApply(item)}
-            isSaved={false}
-          />
+                job={item}
+                onSave={() => saveJob(item)}
+                onApply={() => handleApply(item)}
+                isSaved={false} onRemove={function (): void {
+                    throw new Error('Function not implemented.');
+                } }          />
         )}
         ListEmptyComponent={
           <Text style={[styles.emptyText, { color: theme.colors.text }]}>
