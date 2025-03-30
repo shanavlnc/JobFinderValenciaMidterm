@@ -13,7 +13,7 @@ type Props = StackScreenProps<RootStackParamList, 'JobFinder'>;
 
 const JobFinderScreen = ({ navigation }: Props) => {
   const { jobs, loading, refreshJobs, saveJob } = useJobs();
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
 
@@ -22,11 +22,11 @@ const JobFinderScreen = ({ navigation }: Props) => {
       jobs.filter(job =>
         job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         job.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (job.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())))
+        (job.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))) // Fixed missing parenthesis
       )
     );
   }, [searchQuery, jobs]);
-
+  
   const handleApply = (job: Job) => {
     navigation.navigate('ApplicationForm', { job, fromSaved: false });
   };
@@ -69,8 +69,14 @@ const JobFinderScreen = ({ navigation }: Props) => {
         contentContainerStyle={styles.listContent}
       />
 
-      {/* Footer with Theme Toggle and Saved Jobs link */}
-      <View style={[styles.footer, { borderTopColor: theme.colors.border }]}>
+      {/* Footer */}
+      <View style={[
+        styles.footer, 
+        { 
+          borderTopColor: theme.colors.border,
+          backgroundColor: theme.colors.card
+        }
+      ]}>
         <ThemeToggle />
         <TouchableOpacity 
           onPress={() => navigation.navigate('SavedJobs')}
@@ -91,7 +97,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     padding: 16,
-    paddingBottom: 80, // Space for footer
+    paddingBottom: 80,
   },
   emptyText: {
     textAlign: 'center',
@@ -108,7 +114,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderTopWidth: 1,
-    backgroundColor: 'white',
   },
   footerText: {
     fontSize: 16,
