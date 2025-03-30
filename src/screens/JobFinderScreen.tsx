@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 import { useJobs } from '../context/JobsContext';
 import { useTheme } from '../context/ThemeContext';
 import JobCard from '../components/JobCard';
 import SearchBar from '../components/SearchBar';
+import ThemeToggle from '../components/ThemeToggle';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Job } from '../api/jobsApi';
@@ -24,7 +25,7 @@ const JobFinderScreen = ({ navigation }: Props) => {
         (job.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())))
       )
     );
-  }, [searchQuery, jobs]);  
+  }, [searchQuery, jobs]);
 
   const handleApply = (job: Job) => {
     navigation.navigate('ApplicationForm', { job, fromSaved: false });
@@ -50,7 +51,7 @@ const JobFinderScreen = ({ navigation }: Props) => {
         data={filteredJobs}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {
-          const isSaved = savedJobs.some((savedJob: Job) => savedJob.id === item.id);
+          const isSaved = savedJobs.some(savedJob => savedJob.id === item.id);
           return (
             <JobCard
               job={item}
@@ -68,7 +69,20 @@ const JobFinderScreen = ({ navigation }: Props) => {
         refreshing={loading}
         onRefresh={refreshJobs}
         contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
       />
+
+      <View style={[styles.footer, { backgroundColor: theme.colors.card }]}>
+        <ThemeToggle />
+        <TouchableOpacity 
+          onPress={() => navigation.navigate('SavedJobs')}
+          style={styles.savedJobsButton}
+        >
+          <Text style={[styles.footerText, { color: theme.colors.primary }]}>
+            Saved Jobs
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -79,11 +93,31 @@ const styles = StyleSheet.create({
   },
   listContent: {
     padding: 16,
+    paddingBottom: 80,
   },
   emptyText: {
     textAlign: 'center',
     marginTop: 20,
     fontSize: 16,
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
+  },
+  footerText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  savedJobsButton: {
+    padding: 8,
   },
 });
 

@@ -35,6 +35,7 @@ const SavedJobsScreen = ({ navigation }: Props) => {
           </Text>
         }
         contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

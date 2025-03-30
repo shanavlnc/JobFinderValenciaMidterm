@@ -61,6 +61,7 @@ const SavedJobCard: React.FC<SavedJobCardProps> = ({ job, onRemove, onApply }) =
   );
 };
 
+// Reuse the same styles from JobCard.tsx
 const styles = StyleSheet.create({
   card: {
     padding: 16,
