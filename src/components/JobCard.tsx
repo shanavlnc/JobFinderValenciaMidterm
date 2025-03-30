@@ -4,81 +4,71 @@ import { Job } from '../api/jobsApi';
 import { useTheme } from '../context/ThemeContext';
 
 type JobCardProps = {
-    job: Job;
-    isSaved: boolean;
-    onSave: () => void;
-    onRemove: () => void;
-    onApply: () => void;
-  };
-  
-  const JobCard: React.FC<JobCardProps> = ({ job, isSaved, onSave, onRemove, onApply }) => {
-    const { theme } = useTheme();
-  
-    const handleSavePress = () => {
-      if (isSaved) {
-        onRemove();
-      } else {
-        onSave();
-      }
-    };
-  
-    return (
-      <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
-        <View style={styles.header}>
-          {job.companyLogo && (
-            <Image source={{ uri: job.companyLogo }} style={styles.logo} />
-          )}
-          <View style={styles.headerText}>
-            <Text style={[styles.title, { color: theme.colors.text }]}>{job.title}</Text>
-            <Text style={[styles.company, { color: theme.colors.text }]}>{job.companyName}</Text>
-          </View>
-        </View>
-  
-        <View style={styles.details}>
-          {job.salary && (
-            <Text style={[styles.detail, { color: theme.colors.text }]}>
-              💰 {job.salary}
-            </Text>
-          )}
-          {job.locations && job.locations.length > 0 && (
-            <Text style={[styles.detail, { color: theme.colors.text }]}>
-              📍 {job.locations.join(', ')}
-            </Text>
-          )}
-          {job.jobType && (
-            <Text style={[styles.detail, { color: theme.colors.text }]}>
-              🕒 {job.jobType}
-            </Text>
-          )}
-        </View>
-  
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[
-              styles.button,
-              { 
-                backgroundColor: isSaved ? theme.colors.primary : '#2ecc71',
-                borderColor: theme.colors.primary,
-                borderWidth: isSaved ? 1 : 0
-              }
-            ]}
-            onPress={handleSavePress}
-          >
-            <Text style={[styles.buttonText, { color: isSaved ? theme.colors.primary : 'white' }]}>
-              {isSaved ? 'Saved ✓' : 'Save'}
-            </Text>
-          </TouchableOpacity>
-  
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: theme.colors.primary }]}
-            onPress={onApply}
-          >
-            <Text style={styles.buttonText}>Apply Now</Text>
-          </TouchableOpacity>
+  job: Job;
+  isSaved: boolean;
+  onSave: () => void;
+  onRemove: () => void;
+  onApply: () => void;
+};
+
+const JobCard: React.FC<JobCardProps> = ({ job, isSaved, onSave, onRemove, onApply }) => {
+  const { theme } = useTheme();
+
+  return (
+    <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
+      <View style={styles.header}>
+        {job.companyLogo && (
+          <Image source={{ uri: job.companyLogo }} style={styles.logo} />
+        )}
+        <View style={styles.headerText}>
+          <Text style={[styles.title, { color: theme.colors.text }]}>{job.title}</Text>
+          <Text style={[styles.company, { color: theme.colors.text }]}>{job.companyName}</Text>
         </View>
       </View>
-    );
-  };
+
+      <View style={styles.details}>
+        {job.salary && (
+          <Text style={[styles.detail, { color: theme.colors.text }]}>
+            💰 {job.salary}
+          </Text>
+        )}
+        {job.locations && job.locations.length > 0 && (
+          <Text style={[styles.detail, { color: theme.colors.text }]}>
+            📍 {job.locations.join(', ')}
+          </Text>
+        )}
+        {job.jobType && (
+          <Text style={[styles.detail, { color: theme.colors.text }]}>
+            🕒 {job.jobType}
+          </Text>
+        )}
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            { 
+              backgroundColor: isSaved ? '#4CAF50' : theme.colors.primary,
+            }
+          ]}
+          onPress={isSaved ? onRemove : onSave}
+        >
+          <Text style={styles.buttonText}>
+            {isSaved ? 'Saved' : 'Save'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: theme.colors.primary }]}
+          onPress={onApply}
+        >
+          <Text style={styles.buttonText}>Apply Now</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   card: {
@@ -135,6 +125,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   buttonText: {
+    color: 'white',
     fontWeight: 'bold',
     fontSize: 14,
   },

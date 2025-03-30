@@ -40,16 +40,15 @@ export const JobsProvider: React.FC<{children: React.ReactNode}> = ({ children }
   };
 
   const saveJob = (job: Job) => {
-    if (savedJobs.some(j => j.id === job.id)) return;
-    setSavedJobs(prev => [...prev, job]);
+    setSavedJobs(prev => {
+      if (prev.some(j => j.id === job.id)) return prev;
+      return [...prev, job];
+    });
   };
   
   const removeJob = (jobId: string) => {
     setSavedJobs(prev => prev.filter(job => job.id !== jobId));
   };
-  useEffect(() => {
-    refreshJobs();
-  }, []);
 
   return (
     <JobsContext.Provider value={{

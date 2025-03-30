@@ -24,18 +24,19 @@ const SavedJobsScreen = ({ navigation }: Props) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <JobCard
-                job={item}
-                onRemove={() => removeJob(item.id)}
-                onApply={() => handleApply(item)}
-                isSaved={true} onSave={function (): void {
-                    throw new Error('Function not implemented.');
-                } }          />
+            job={item}
+            isSaved={true}
+            onSave={() => {}}
+            onRemove={() => removeJob(item.id)}
+            onApply={() => handleApply(item)}
+          />
         )}
         ListEmptyComponent={
           <Text style={[styles.emptyText, { color: theme.colors.text }]}>
             No saved jobs
           </Text>
         }
+        contentContainerStyle={styles.listContent}
       />
     </View>
   );
@@ -44,6 +45,8 @@ const SavedJobsScreen = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  listContent: {
     padding: 16,
   },
   emptyText: {
