@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { useJobs } from '../context/JobsContext';
 import { useTheme } from '../context/ThemeContext';
-import JobCard from '../components/JobCard';
+import SavedJobCard from '../components/SavedJobCard';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Job } from '../api/jobsApi';
@@ -23,10 +23,8 @@ const SavedJobsScreen = ({ navigation }: Props) => {
         data={savedJobs}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <JobCard
+          <SavedJobCard
             job={item}
-            isSaved={true}
-            onSave={() => {}}
             onRemove={() => removeJob(item.id)}
             onApply={() => handleApply(item)}
           />
