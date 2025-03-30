@@ -21,7 +21,7 @@ const JobFinderScreen = ({ navigation }: Props) => {
       jobs.filter(job =>
         job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         job.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (job.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))) // Ensuring proper closure
+        (job.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())))
       )
     );
   }, [searchQuery, jobs]);  
