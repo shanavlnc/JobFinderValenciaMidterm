@@ -51,8 +51,8 @@ const SavedJobCard: React.FC<SavedJobCardProps> = ({ job, onRemove, onApply }) =
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.button, { backgroundColor: theme.colors.primary }]}
-          onPress={onApply}
+        style={[styles.button, { backgroundColor: '#003366' }]} 
+        onPress={onApply}
         >
           <Text style={styles.buttonText}>Apply Now</Text>
         </TouchableOpacity>
@@ -61,7 +61,7 @@ const SavedJobCard: React.FC<SavedJobCardProps> = ({ job, onRemove, onApply }) =
   );
 };
 
-// Reuse the same styles from JobCard.tsx
+
 const styles = StyleSheet.create({
   card: {
     padding: 16,

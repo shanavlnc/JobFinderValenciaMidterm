@@ -60,8 +60,8 @@ const JobCard: React.FC<JobCardProps> = ({ job, isSaved, onSave, onApply }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.button, { backgroundColor: theme.colors.primary }]}
-          onPress={onApply}
+        style={[styles.button, { backgroundColor: '#003366' }]} 
+        onPress={onApply}
         >
           <Text style={styles.buttonText}>Apply Now</Text>
         </TouchableOpacity>
